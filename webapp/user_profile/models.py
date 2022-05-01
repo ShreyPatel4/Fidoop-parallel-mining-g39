@@ -6,7 +6,7 @@ from io import BytesIO
 import logging
 from django.core.files.base import ContentFile
 from placeholder_pics.placeholder import PlaceholderPic
-from django_thumbs.fields import ImageThumbsField
+# from django_thumbs.fields import ImageThumbsField
 
 import os
 from django.utils import timezone
@@ -38,26 +38,26 @@ class UserProfile(models.Model):
     }
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_profile")
-    image = ImageThumbsField(default=None, verbose_name="profile image",
-                             sizes=SIZES,
-                             upload_to=upload_avatar_to, null=True, blank=True)
+    # image = ImageThumbsField(default=None, verbose_name="profile image",
+    #                          sizes=SIZES,
+    #                          upload_to=upload_avatar_to, null=True, blank=True)
     bio = models.TextField(max_length=500, blank=True, null=True, default=None, verbose_name="Write about your self")
     location = models.CharField(max_length=30, blank=True, null=True, default=None)
     birth_date = models.DateField(null=True, blank=True)
 
-    def generate_img(self):
-        f = BytesIO()
-        logger.debug("generating image")
-        if self.user.first_name:
-            img_name = self.user.first_name[:2].capitalize()
-        else:
-            img_name = self.user.email[:2].capitalize()
-        placeholder = PlaceholderPic(img_name)
-        placeholder.image.save(f, format='png')
-        s = f.getvalue()
+    # def generate_img(self):
+    #     f = BytesIO()
+    #     logger.debug("generating image")
+    #     if self.user.first_name:
+    #         img_name = self.user.first_name[:2].capitalize()
+    #     else:
+    #         img_name = self.user.email[:2].capitalize()
+    #     placeholder = PlaceholderPic(img_name)
+    #     placeholder.image.save(f, format='png')
+    #     s = f.getvalue()
 
-        self.image.save("%s.png" % self.user.id,
-                        ContentFile(s))
+    #     self.image.save("%s.png" % self.user.id,
+    #                     ContentFile(s))
 
 
 # Create a model to save uploaded files to the media folder from upload.html
@@ -73,8 +73,8 @@ class UploadedFile(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         profile = UserProfile.objects.create(user=instance)
-        if not profile.image:
-            profile.generate_img()
+        # if not profile.image:
+        #     profile.generate_img()
 
 
 @receiver(post_save, sender=User)
