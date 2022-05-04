@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from io import BytesIO
 import logging
 from django.core.files.base import ContentFile
-from placeholder_pics.placeholder import PlaceholderPic
+# from placeholder_pics.placeholder import PlaceholderPic
 # from django_thumbs.fields import ImageThumbsField
 
 import os
